@@ -19,5 +19,5 @@ cribl:
 qkroode.nl:
 	$(eval ENV-HUGO := $(shell grep 'ENV VERSION=' qkroode.nl/Dockerfile | cut -d = -f 2))
 	$(eval ENV-qkroode := $(shell git --git-dir ../../qkroode.nl/.git log --pretty=format:"%h" -1))
-	docker build -t registry.service.consul:5000/homelab/qkroode.nl:$(ENV-HUGO)-$(ENV-qkroode) ./qkroode.nl
+	docker build --no-cache -t registry.service.consul:5000/homelab/qkroode.nl:$(ENV-HUGO)-$(ENV-qkroode) ./qkroode.nl
 	docker image push registry.service.consul:5000/homelab/qkroode.nl:$(ENV-HUGO)-$(ENV-qkroode)
