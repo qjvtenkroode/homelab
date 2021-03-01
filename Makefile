@@ -13,8 +13,9 @@ all: cribl qkroode.nl
 
 cribl:
 	$(eval ENV-CRIBL := $(shell grep 'ENV VERSION=' cribl/Dockerfile | cut -d = -f 2))
-	docker build -t registry.service.consul:5000/homelab/cribl:$(ENV-CRIBL) ./cribl
-	docker image push registry.service.consul:5000/homelab/cribl:$(ENV-CRIBL)
+	$(eval ENV-CRIBL-conf := $(shell git --git-dir ../cribl/.git log --pretty=format:"%h" -1))
+	docker build --no-cache -t registry.service.consul:5000/homelab/cribl:$(ENV-CRIBL)-$(ENV-CRIBL-conf) ./cribl
+	docker image push registry.service.consul:5000/homelab/cribl:$(ENV-CRIBL)-$(ENV-CRIBL-conf)
 
 qkroode.nl:
 	$(eval ENV-HUGO := $(shell grep 'ENV VERSION=' qkroode.nl/Dockerfile | cut -d = -f 2))
