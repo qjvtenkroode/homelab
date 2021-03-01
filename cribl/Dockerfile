@@ -1,7 +1,7 @@
 FROM debian:10.6-slim
 
-ENV VERSION_FULL=2.3.3-fc2c6ae8
-ENV VERSION=2.3.3
+ENV VERSION_FULL=2.4.2-4c6fdc49
+ENV VERSION=2.4.2
 ENV GIT=https://github.com/qjvtenkroode/homelab-cribl
 
 RUN apt-get update \
