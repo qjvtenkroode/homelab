@@ -1,0 +1,19 @@
+- name: Install Hashicorp stack - Vault
+  block:
+    - name: Download Vault - {{ vault_version }}
+      get_url:
+        url: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip"
+        dest: "{{ download_dir }}/vault-{{ vault_version }}.zip"
+        checksum: "{{ vault_checksum }}" 
+
+    - name: Expand Vault and place in {{ binary_dir }}
+      unarchive:
+        src: "{{ download_dir }}/vault-{{ vault_version }}.zip"
+        dest: "{{ binary_dir }}"
+        remote_src: true
+
+    - name: Cleanup
+      file:
+        path: "{{ download_dir }}/vault-{{ vault_version }}.zip"
+        state: absent
+  when: ansible_local.homelab.vault_version != vault_version

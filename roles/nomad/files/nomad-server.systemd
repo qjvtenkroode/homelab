@@ -1,0 +1,14 @@
+[Unit]
+Description=Nomad job scheduler
+After=network.target
+StartLimitIntervalSec=1
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/local/bin/nomad agent -server -config=/etc/nomad.d
+
+[Install]
+WantedBy=multi-user.target

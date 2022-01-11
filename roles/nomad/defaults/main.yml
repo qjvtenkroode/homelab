@@ -1,0 +1,4 @@
+---
+nomad_datacenter: "homelab"
+nomad_leader: ""
+nomad_type: ""

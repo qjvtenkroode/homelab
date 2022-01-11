@@ -1,0 +1,58 @@
+---
+- name: Install Hashicorp stack - Consul
+  block:
+    - name: Download Consul - {{ consul_version }}
+      get_url:
+        url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
+        dest: "{{ download_dir }}/consul-{{ consul_version }}.zip"
+        checksum: "{{ consul_checksum }}" 
+
+    - name: Expand Consul and place in {{ binary_dir }}
+      unarchive:
+        src: "{{ download_dir }}/consul-{{ consul_version }}.zip"
+        dest: "{{ binary_dir }}"
+        remote_src: true
+      notify:
+        - Restart consul
+
+    - name: Cleanup
+      file:
+        path: "{{ download_dir }}/consul-{{ consul_version }}.zip"
+        state: absent
+  when: ansible_local.homelab.consul_version != consul_version
+
+- name: Configure Hashicorp stack - Consul
+  block:
+    - name: Create config directory
+      file:
+        path: /etc/consul.d
+        state: directory
+    
+    - name: Consul server config
+      template:
+        src: templates/server.j2
+        dest: /etc/consul.d/server.hcl
+      notify:
+        - Restart consul
+      when: consul_type == "server"
+
+    - name: Consul client config
+      template:
+        src: templates/client.j2
+        dest: /etc/consul.d/client.hcl
+      notify:
+        - Restart consul
+      when: consul_type == "client"
+
+    - name: Consul setup systemd
+      copy:
+        src: consul.systemd
+        dest: /etc/systemd/system/consul.service
+      notify:
+        - Restart consul
+    
+    - name: Consul systemd enabled and started
+      systemd:
+        name: consul
+        enabled: true
+        state: started

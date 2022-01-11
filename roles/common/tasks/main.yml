@@ -1,0 +1,41 @@
+---
+- name: Create custom fact directory
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+
+- name: Install custom fact script
+  register: custom_fact_installed
+  copy:
+    src: files/homelab.fact
+    dest: /etc/ansible/facts.d/homelab.fact
+    mode: 0755
+
+- name: Re-run setup to use custom facts
+  setup: ~
+  when: custom_fact_installed.changed == true
+
+- name: Print custom facts
+  debug:
+    msg: "{{ ansible_local.homelab }}"
+
+- name: Install helper packages - unzip
+  yum:
+    name: unzip
+    state: present
+
+- name: Install helper packages - tar
+  yum:
+    name: tar
+    state: present
+
+- name: Install packages - podman
+  yum:
+    name: podman
+    state: present
+
+- name: Podman systemd enabled and started
+  systemd:
+    name: podman
+    enabled: true
+    state: started

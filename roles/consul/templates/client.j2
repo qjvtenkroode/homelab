@@ -1,0 +1,11 @@
+advertise_addr = "{% raw %}{{ GetInterfaceIP \"eth0\" }}{% endraw %}"
+bind_addr = "0.0.0.0"
+client_addr = "0.0.0.0"
+datacenter = "{{ consul_datacenter }}"
+data_dir = "/var/consul"
+server = false
+ui = false
+retry_join = ["{{ consul_leader }}"]
+disable_update_check = true
+disable_remote_exec = true
+enable_syslog = true

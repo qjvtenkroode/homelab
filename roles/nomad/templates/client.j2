@@ -1,0 +1,7 @@
+client {
+  enabled = true
+  servers = ["{{ nomad_leader }}:4647"]
+  template {
+    disable_file_sandbox = true
+  }
+}

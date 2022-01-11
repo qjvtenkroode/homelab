@@ -1,0 +1,98 @@
+---
+- name: Install Hashicorp stack - Nomad
+  block:
+    - name: Download Nomad - {{ nomad_version }}
+      get_url:
+        url: "https://releases.hashicorp.com/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_linux_amd64.zip"
+        dest: "{{ download_dir }}/nomad-{{ nomad_version }}.zip"
+        checksum: "{{ nomad_checksum }}" 
+
+    - name: Expand Nomad and place in {{ binary_dir }}
+      unarchive:
+        src: "{{ download_dir }}/nomad-{{ nomad_version }}.zip"
+        dest: "{{ binary_dir }}"
+        remote_src: true
+      notify:
+        - Restart nomad
+
+    - name: Cleanup
+      file:
+        path: "{{ download_dir }}/nomad-{{ nomad_version }}.zip"
+        state: absent
+  when: ansible_local.homelab.nomad_version != nomad_version
+
+- name: Install Hashicorp stack - Nomad driver Podman
+  block:
+    - name: Download Nomad driver Podman - {{ nomad_driver_podman_version }}
+      get_url:
+        url: "https://releases.hashicorp.com/nomad-driver-podman/{{ nomad_driver_podman_version }}/nomad-driver-podman_{{ nomad_driver_podman_version }}_linux_amd64.zip"
+        dest: "{{ download_dir }}/nomad-driver-podman-{{ nomad_driver_podman_version }}.zip"
+        checksum: "{{ nomad_driver_podman_checksum }}" 
+
+    - name: Create Nomad Plugins directory
+      file:
+        path: /var/lib/nomad/plugins
+        state: directory
+
+    - name: Expand Nomad driver Podman and place in plugin directory
+      unarchive:
+        src: "{{ download_dir }}/nomad-driver-podman-{{ nomad_driver_podman_version }}.zip"
+        dest: "/var/lib/nomad/plugins"
+        remote_src: true
+      notify:
+        - Restart nomad
+
+    - name: Update version registery for Podman plugin
+      copy:
+        content: "{{ nomad_driver_podman_version }}"
+        dest: "/home/hivemind/.nomad_driver_podman.version"
+
+    - name: Cleanup
+      file:
+        path: "{{ download_dir }}/nomad-driver-podman-{{ nomad_driver_podman_version }}.zip"
+        state: absent
+  when: ansible_local.homelab.nomad_driver_podman_version != nomad_driver_podman_version
+
+- name: Configure Hashicorp stack - Nomad
+  block:
+    - name: Create config directory
+      file:
+        path: /etc/nomad.d
+        state: directory
+    
+    - name: Nomad common config
+      template:
+        src: templates/common.j2
+        dest: /etc/nomad.d/common.hcl
+      notify:
+        - Restart nomad
+
+    - name: Nomad client config
+      template:
+        src: templates/client.j2
+        dest: /etc/nomad.d/client.hcl
+      notify:
+        - Restart nomad
+      when: nomad_type == "client"
+
+    - name: Nomad setup systemd for server
+      copy:
+        src: nomad-server.systemd
+        dest: /etc/systemd/system/nomad.service
+      when: nomad_type == "server"
+      notify:
+        - Restart nomad
+
+    - name: Nomad setup systemd for client
+      copy:
+        src: nomad-client.systemd
+        dest: /etc/systemd/system/nomad.service
+      when: nomad_type == "client"
+      notify:
+        - Restart nomad
+    
+    - name: Nomad systemd enabled and started
+      systemd:
+        name: nomad
+        enabled: true
+        state: started

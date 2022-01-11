@@ -1,0 +1,14 @@
+[Unit]
+Description=Consul service mesh
+After=network.target
+StartLimitIntervalSec=1
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d
+
+[Install]
+WantedBy=multi-user.target

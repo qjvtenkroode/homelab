@@ -1,0 +1,7 @@
+---
+binary_dir: /usr/local/bin
+download_dir: /tmp
+nomad_version: 1.1.1
+nomad_checksum: sha256:cbb4725e3e10b016b1682db8b0b54d1a1f60d84f0258aa488201dc71f20dc75c
+nomad_driver_podman_version: 0.3.0
+nomad_driver_podman_checksum: sha256:23ce5a3f9b41bbd1bc97d8e61e043f5e01d1d040ae9a2469267cbb851c8bbc90

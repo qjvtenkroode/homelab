@@ -1,0 +1,6 @@
+---
+binary_dir: /usr/local/bin
+download_dir: /tmp
+vault_version: 1.7.2
+vault_checksum: sha256:5ee6bb8119b55c27cd3864c982177714a0a4a3813927ccafdb262e78e4bb67bc
+
