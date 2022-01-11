@@ -1,0 +1,26 @@
+---
+- name: Deploy a job to Nomad cluster
+  hosts: localhost
+
+  tasks:
+    - name: Pull git repo
+      git:
+        repo: https://github.com/qjvtenkroode/homelab-nomad.git
+        dest: /tmp/homelab-nomad
+        version: main
+
+    - name: Deploy jobs - {{ deploy_job }}
+      uri:
+        url: http://{{ nomad_leader }}:4646/v1/jobs
+        method: POST
+        body_format: json
+        src: /tmp/homelab-nomad/{{ item }}.nomad
+        status_code: 200
+      register: results
+      with_items: "{{ deploy_job }}"
+
+    - name: debug
+      debug:
+        msg: "{{ item.json }}"
+      with_items: "{{ results.results }}"
+
