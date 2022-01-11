@@ -1,2 +1,4 @@
-testing
+testing/.vagrant
+testing/tmpvolume
+testing/monitoring
 inventory.yml
