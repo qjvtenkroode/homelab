@@ -34,6 +34,10 @@
     name: podman
     state: present
 
+- name: Install python module - python-consul
+  pip:
+    name: python-consul
+
 - name: Podman systemd enabled and started
   systemd:
     name: podman

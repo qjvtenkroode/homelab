@@ -45,7 +45,7 @@
     - name: Update version registery for Podman plugin
       copy:
         content: "{{ nomad_driver_podman_version }}"
-        dest: "/home/hivemind/.nomad_driver_podman.version"
+        dest: "~/.nomad_driver_podman.version"
 
     - name: Cleanup
       file:

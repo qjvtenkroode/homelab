@@ -1,2 +1,0 @@
----
-node_exporter_json: "{{ lookup('template', 'node_exporter.json.j2') }}"

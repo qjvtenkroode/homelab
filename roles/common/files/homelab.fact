@@ -1,6 +1,6 @@
 #!/bin/bash
 NOMAD=`/usr/local/bin/nomad --version | awk '{ print substr($2, 2, length($2)) }'`
-NOMAD_DRIVER_PODMAN=`cat /home/hivemind/.nomad_driver_podman.version`
+NOMAD_DRIVER_PODMAN=`cat ~/.nomad_driver_podman.version`
 CONSUL=`/usr/local/bin/consul --version | head -n 1 | awk '{ print substr($2, 2, length($2)) }'`
 VAULT=`/usr/local/bin/vault --version | awk '{ print substr($2, 2, length($2)) }'`
 NODE_EXPORTER=`/usr/local/bin/node_exporter --version | head -n 1 | awk '{ print $3 }'`

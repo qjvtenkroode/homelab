@@ -20,7 +20,6 @@
       notify:
         - Restart node_exporter
 
-    
     - name: Cleanup
       file:
         path: "{{ download_dir }}/node_exporter-{{ node_exporter_version }}.tar.gz"
@@ -41,9 +40,11 @@
         state: started
     
     - name: Register node_exporter in Consul
-      uri:
-        url: "http://localhost:8500/v1/agent/service/register"
-        method: PUT
-        status_code: 200
-        body: "{{ node_exporter_json }}"
-        body_format: json
+      community.general.consul:
+        service_name: node_exporter
+        service_id: "{{ ansible_hostname }}_node_exporter"
+        service_port: 9100
+        interval: 10s
+        timeout: 5s
+        check_name: "Check /metrics page"
+        http: "http://{{ ansible_eno1.ipv4.address }}:9100/metrics"
