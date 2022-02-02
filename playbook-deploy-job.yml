@@ -5,22 +5,15 @@
   tasks:
     - name: Pull git repo
       git:
-        repo: https://github.com/qjvtenkroode/homelab-nomad.git
         dest: /tmp/homelab-nomad
+        repo: https://github.com/qjvtenkroode/homelab-nomad.git
         version: main
 
     - name: Deploy jobs - {{ deploy_job }}
-      uri:
-        url: http://{{ nomad_leader }}:4646/v1/jobs
-        method: POST
-        body_format: json
-        src: /tmp/homelab-nomad/{{ item }}.nomad
-        status_code: 200
-      register: results
+      community.general.nomad_job:
+        content: "{{ lookup('ansible.builtin.file', '/tmp/homelab-nomad/{{ item }}.nomad') }}"
+        content_format: hcl
+        host: {{ nomad_leader }}
+        state: present
+        use_ssl: false
       with_items: "{{ deploy_job }}"
-
-    - name: debug
-      debug:
-        msg: "{{ item.json }}"
-      with_items: "{{ results.results }}"
-
