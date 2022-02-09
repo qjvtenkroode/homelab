@@ -8,15 +8,12 @@ job "traefik-test" {
         network {
             port "http" {
                 static = 80
-                to = 80
             }
             port "https" {
                 static = 443
-                to = 443
             }
             port "ui" {
                 static = 8080
-                to = 8080
             }
         }
         service  {
