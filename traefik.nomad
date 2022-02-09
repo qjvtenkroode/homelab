@@ -8,12 +8,15 @@ job "traefik-test" {
         network {
             port "http" {
                 static = 80
+                to = 80
             }
             port "https" {
                 static = 443
+                to = 80
             }
             port "ui" {
                 static = 8080
+                to = 80
             }
         }
         service  {
@@ -35,6 +38,9 @@ job "traefik-test" {
             config {
                 image = "traefik:v2.3"
                 ports = ["http", "https", "ui"]
+                env = [
+                    "--api.insecure=true"
+                ]
             }
             resources {
                 cpu = 100
