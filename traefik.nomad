@@ -12,11 +12,11 @@ job "traefik-test" {
             }
             port "https" {
                 static = 443
-                to = 80
+                to = 443
             }
             port "ui" {
                 static = 8080
-                to = 80
+                to = 8080
             }
         }
         service  {
@@ -38,7 +38,7 @@ job "traefik-test" {
             config {
                 image = "traefik:v2.3"
                 ports = ["http", "https", "ui"]
-                env = [
+                args = [
                     "--api.insecure=true"
                 ]
             }

@@ -6,7 +6,9 @@ job "registry-test" {
 
     group "registry" {
         network {
-            port "registry" {}
+            port "registry" {
+                to = 5000
+            }
         }
         service  {
             port = "registry"
@@ -21,6 +23,7 @@ job "registry-test" {
             driver = "podman"
             config {
                 image = "registry:latest"
+                ports = ["registry"]
             }
             resources {
                 cpu = 100
