@@ -23,7 +23,7 @@ job "monitoring-test" {
             driver = "podman"
             config {
                 image = "prom/prometheus:v2.33.3"
-                ports = "prom-ui"
+                ports = ["prom-ui"]
             }
             resources {
                 cpu = 1024
