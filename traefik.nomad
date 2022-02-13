@@ -26,6 +26,7 @@ job "traefik-test" {
                 interval = "10s"
                 timeout = "2s"
             }
+            name = "traefik-test"
             port = "ui"
             tags = [
                 "traefik.enable=true",

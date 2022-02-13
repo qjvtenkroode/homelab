@@ -12,6 +12,7 @@ job "registry-test" {
         }
         service  {
             port = "registry"
+            name = "registry-test"
             check {
                 name = "registry reachable check"
                 type = "tcp"
