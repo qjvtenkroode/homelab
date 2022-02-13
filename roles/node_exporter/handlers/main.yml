@@ -3,3 +3,8 @@
   systemd:
     name: node_exporter
     state: restarted
+
+- name: Restart firewalld
+  systemd:
+    name: firewalld
+    state: restarted

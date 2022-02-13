@@ -39,6 +39,20 @@
         enabled: true
         state: started
     
+    - name: Firewalld - add node_exporter service
+      copy:
+        src: node_exporter.firewalld
+        dest: /etc/firewalld/services/node_exporter.xml
+      notify:
+        - Restart firewalld
+
+    - name: Firewalld - add node_exporter to zone
+      copy:
+        src: public.firewalld
+        dest: /etc/firewalld/zones/public.xml
+      notify:
+        - Restart firewalld
+    
     - name: Register node_exporter in Consul
       community.general.consul:
         service_name: node_exporter

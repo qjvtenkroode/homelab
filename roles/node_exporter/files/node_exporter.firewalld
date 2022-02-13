@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>node_exporter</short>
+  <description>Node Exporter is an endpoint for Prometheus to scrape and collect OS metrics</description>
+  <port protocol="tcp" port="9100"/>
+</service>
