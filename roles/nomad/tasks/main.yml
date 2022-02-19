@@ -90,6 +90,21 @@
       when: nomad_type == "client"
       notify:
         - Restart nomad
+
+    - name: Firewalld - add nomad service
+      copy:
+        src: nomad.firewalld
+        dest: /etc/firewalld/services/nomad.xml
+
+    - name: Firewalld - reload
+      command: firewall-cmd --reload
+
+    - name: Firewalld - add nomad to zone
+      ansible.posix.firewalld:
+        service: nomad
+        permanent: yes
+        state: enabled
+        immediate: true
     
     - name: Nomad systemd enabled and started
       systemd:

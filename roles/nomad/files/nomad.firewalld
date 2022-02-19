@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>nomad</short>
+  <description>Nomad is a job scheduler</description>
+  <port protocol="tcp" port="4646"/>
+  <port protocol="tcp" port="4647"/>
+  <port protocol="tcp" port="4648"/>
+</service>

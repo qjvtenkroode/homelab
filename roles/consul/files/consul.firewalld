@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>consul</short>
+  <description>Consul is a service networking solution for service discovery</description>
+  <port protocol="tcp" port="8300"/>
+  <port protocol="tcp" port="8301"/>
+  <port protocol="udp" port="8301"/>
+  <port protocol="tcp" port="8302"/>
+  <port protocol="udp" port="8302"/>
+  <port protocol="tcp" port="8500"/>
+  <port protocol="tcp" port="8600"/>
+  <port protocol="udp" port="8600"/>
+</service>

@@ -43,15 +43,16 @@
       copy:
         src: node_exporter.firewalld
         dest: /etc/firewalld/services/node_exporter.xml
-      notify:
-        - Restart firewalld
+
+    - name: Firewalld - reload
+      command: firewall-cmd --reload
 
     - name: Firewalld - add node_exporter to zone
-      copy:
-        src: public.firewalld
-        dest: /etc/firewalld/zones/public.xml
-      notify:
-        - Restart firewalld
+      ansible.posix.firewalld:
+        service: node_exporter
+        permanent: yes
+        state: enabled
+        immediate: true
     
     - name: Register node_exporter in Consul
       community.general.consul:
