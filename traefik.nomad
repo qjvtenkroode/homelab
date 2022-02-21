@@ -36,7 +36,7 @@ job "traefik-test" {
         task "traefik" {
             driver = "podman"
             config {
-                image = "traefik:v2.3"
+                image = "traefik:v2.6"
                 ports = ["http", "https", "ui"]
                 args = [
                     "--api.insecure=true",
