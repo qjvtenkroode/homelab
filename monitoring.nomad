@@ -50,6 +50,10 @@ scrape_configs:
     consul_sd_configs:
       - server: consul.service.consul:8500
         services: [node_exporter]
+  - job_name: traefik
+    consul_sd_configs:
+      - server: consul.service.consul:8500
+        services: [traefik, traefik-test]
                 EOF
             }
         }
