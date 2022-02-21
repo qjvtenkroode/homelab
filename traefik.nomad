@@ -32,7 +32,6 @@ job "traefik-test" {
                 "traefik.enable=true",
                 "traefik.frontend.entryPoints=http,https"
             ]
-            
         }
         task "traefik" {
             driver = "podman"
@@ -40,7 +39,9 @@ job "traefik-test" {
                 image = "traefik:v2.3"
                 ports = ["http", "https", "ui"]
                 args = [
-                    "--api.insecure=true"
+                    "--api.insecure=true",
+                    "--metrics.prometheus=true",
+                    "--metrics.prometheus.addrouterslabels=true"
                 ]
             }
             resources {
