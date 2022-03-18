@@ -10,10 +10,6 @@ job "traefik-test" {
                 static = 80
                 to = 80
             }
-            port "https" {
-                static = 443
-                to = 443
-            }
             port "ui" {
                 static = 8080
                 to = 8080
@@ -30,18 +26,26 @@ job "traefik-test" {
             port = "ui"
             tags = [
                 "traefik.enable=true",
-                "traefik.frontend.entryPoints=http,https"
+                "traefik.frontend.entryPoints=http"
             ]
         }
         task "traefik" {
             driver = "podman"
             config {
                 image = "traefik:v2.6"
-                ports = ["http", "https", "ui"]
+                ports = ["http", "ui"]
                 args = [
                     "--api.insecure=true",
                     "--metrics.prometheus=true",
-                    "--metrics.prometheus.addrouterslabels=true"
+                    "--metrics.prometheus.addrouterslabels=true",
+                    "--entryPoints.web.address=:80",
+                    "--providers.consulcatalog",
+                    # filter down to only test servics through a prefix
+                    "--providers.consulcatalog.prefix=test-traefik",
+                    "--providers.consulcatalog.endpoint.address=consul.service.consul:8500",
+                    "--providers.consulcatalog.endpoint.datacenter=homelab",
+                    "--providers.consulcatalog.exposedByDefault=false"
+
                 ]
             }
             resources {
