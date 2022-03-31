@@ -119,6 +119,10 @@ job "monitoring-test" {
                       - job_name: prometheus
                         static_configs:
                           - targets: ['localhost:9090']
+                      - job_name: solaredge
+                        scrape_interval: 5s
+                        static_configs:
+                          - targets: ['stargazer.qkroode.nl:2112']
                       - job_name: node-exporter
                         consul_sd_configs:
                           - server: consul.service.consul:8500
