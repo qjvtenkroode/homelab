@@ -11,14 +11,22 @@ job "registry-test" {
             }
         }
         service  {
-            port = "registry"
-            name = "registry-test"
             check {
                 name = "registry reachable check"
                 type = "tcp"
                 interval = "10s"
                 timeout = "2s"
             }
+            name = "registry-test"
+            port = "registry"
+            tags = [
+                "test-traefik.enable=true",
+                "test-traefik.frontend.entryPoints=https",
+                "test-traefik.http.routers.registry-https.entrypoints=web",
+                "test-traefik.http.routers.registry-https.rule=Host(`registry.test-qkroode.nl`)",
+                "test-traefik.http.routers.registry-https.service=registry",
+                "test-traefik.http.services.registry.loadbalancer.server.port=${NOMAD_HOST_PORT_registry}"
+            ]
         }
         task "registry" {
             driver = "podman"
