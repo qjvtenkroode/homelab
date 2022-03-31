@@ -1,6 +1,6 @@
 # Description: Treafik as frontend proxy for all exposed services within Nomad cluster
 
-job "traefik-test" {
+job "test-traefik" {
     datacenters = ["testing"]
     type = "service"
 

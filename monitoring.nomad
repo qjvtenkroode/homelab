@@ -1,6 +1,6 @@
 # Description: All monitoring related jobs, Prometheus and AlertManager
 
-job "monitoring-test" {
+job "test-monitoring" {
     datacenters = ["testing"]
     type = "service"
 

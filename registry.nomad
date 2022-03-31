@@ -1,6 +1,6 @@
 # Description: private docker registry
 
-job "registry-test" {
+job "test-registry" {
     datacenters = ["testing"]
     type = "service"
 
