@@ -33,6 +33,7 @@ job "test-registry" {
             config {
                 image = "registry:latest"
                 ports = ["registry"]
+                volumes = ["/mnt/registry:/var/lib/registry"]
             }
             resources {
                 cpu = 100
