@@ -29,6 +29,11 @@
     name: tar
     state: present
 
+- name: Install helper packages - nfs-utils
+  yum:
+    name: nfs-utils
+    state: present
+
 - name: Install packages - podman
   yum:
     name: podman

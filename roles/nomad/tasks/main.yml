@@ -105,6 +105,34 @@
         permanent: yes
         state: enabled
         immediate: true
+
+    - name: Setup NFS directories and mounts
+      block:
+        - name: NFS - Create directories - prometheus
+          file:
+            path: /mnt/prometheus
+            state: directory
+
+        - name: NFS - Create directories - registry
+          file:
+            path: /mnt/registry
+            state: directory
+
+        - name: NFS - Mount - prometheus
+          ansible.posix.mount:
+            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/prometheus
+            path: /mnt/prometheus
+            fstype: nfs
+            opts: rw,sync
+            state: mounted
+
+        - name: NFS - Mount - registry
+          ansible.posix.mount:
+            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/registry
+            path: /mnt/registry
+            fstype: nfs
+            opts: rw,sync
+            state: mounted
     
     - name: Nomad systemd enabled and started
       systemd:
