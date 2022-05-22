@@ -48,3 +48,11 @@
     name: podman
     enabled: true
     state: started
+
+- name: Firewalld - add mysql to zone
+  ansible.posix.firewalld:
+    service: mysql
+    permanent: yes
+    state: enabled
+    immediate: true
+

@@ -108,6 +108,11 @@
 
     - name: Setup NFS directories and mounts
       block:
+        - name: NFS - Create directories - photoprism
+          file:
+            path: /mnt/photoprism
+            state: directory
+
         - name: NFS - Create directories - prometheus
           file:
             path: /mnt/prometheus
@@ -117,6 +122,22 @@
           file:
             path: /mnt/registry
             state: directory
+
+        - name: NFS - Mount - photoprism
+          ansible.posix.mount:
+            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photoprism
+            path: /mnt/photoprism
+            fstype: nfs
+            opts: rw,sync
+            state: mounted
+
+        - name: NFS - Mount - photoprism - original media
+          ansible.posix.mount:
+            src: truenas.qkroode.nl:/mnt/NAS/photo
+            path: /mnt/photo
+            fstype: nfs
+            opts: ro
+            state: mounted
 
         - name: NFS - Mount - prometheus
           ansible.posix.mount:
