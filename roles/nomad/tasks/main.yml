@@ -132,7 +132,7 @@
           block:
             - name: NFS - Mount - photoprism
               ansible.posix.mount:
-                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photoprism
+                src: truenas.qkroode.nl:/mnt/homelab/nomad/photoprism
                 path: /mnt/photoprism
                 fstype: nfs
                 opts: rw,sync
@@ -148,7 +148,7 @@
              
             - name: NFS - Mount - prometheus
               ansible.posix.mount:
-                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/prometheus
+                src: truenas.qkroode.nl:/mnt/homelab/nomad/prometheus
                 path: /mnt/prometheus
                 fstype: nfs
                 opts: rw,sync
@@ -156,7 +156,7 @@
 
             - name: NFS - Mount - registry
               ansible.posix.mount:
-                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/registry
+                src: truenas.qkroode.nl:/mnt/homelab/nomad/registry
                 path: /mnt/registry
                 fstype: nfs
                 opts: rw,sync
