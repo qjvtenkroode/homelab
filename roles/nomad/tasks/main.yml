@@ -130,7 +130,7 @@
         
         - name: NFS mounting - homelab cluster
           block:
-           - name: NFS - Mount - photoprism
+            - name: NFS - Mount - photoprism
               ansible.posix.mount:
                 src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photoprism
                 path: /mnt/photoprism
