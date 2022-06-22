@@ -123,10 +123,23 @@
             path: /mnt/registry
             state: directory
 
+        - name: NFS - Create directories - orginals 
+          file:
+            path: /mnt/originals
+            state: directory
+
         - name: NFS - Mount - photoprism
           ansible.posix.mount:
             src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photoprism
             path: /mnt/photoprism
+            fstype: nfs
+            opts: rw,sync
+            state: mounted
+        
+        - name: NFS - Mount - photoprism - originals test
+          ansible.posix.mount:
+            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photos
+            path: /mnt/originals
             fstype: nfs
             opts: rw,sync
             state: mounted
