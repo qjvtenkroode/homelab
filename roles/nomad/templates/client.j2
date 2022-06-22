@@ -4,13 +4,4 @@ client {
   template {
     disable_file_sandbox = true
   }
-
-  host_volume "prometheus" {
-    path = "/mnt/prometheus"
-    read_only = false
-  }
-  host_volume "registry" {
-    path = "/mnt/registry"
-    read_only = false
-  }
 }
