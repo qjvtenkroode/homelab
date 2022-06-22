@@ -48,7 +48,7 @@ job "photocatalog-photoprism" {
         PHOTOPRISM_READONLY          = false
         PHOTOPRISM_WORKERS           = 2
         PHOTOPRISM_DATABASE_DRIVER   = "mysql"
-        PHOTOPRISM_DATABASE_SERVER   = "database.photoprism.service.consul:3306"
+        PHOTOPRISM_DATABASE_SERVER   = "database.photoprism-test.service.consul:3306"
         PHOTOPRISM_DATABASE_NAME     = "photoprism"
         PHOTOPRISM_DATABASE_USER     = "photoprism"
         PHOTOPRISM_DATABASE_PASSWORD = "insecure"
