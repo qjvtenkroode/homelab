@@ -37,7 +37,7 @@ job "photocatalog-photoprism" {
         ports = ["photoprism"]
 
         volumes = [
-          "/mnt/photo:/photoprism/originals",
+          "/mnt/originals:/photoprism/originals",
           "/mnt/photoprism:/photoprism/storage",
         ]
       }
@@ -45,7 +45,7 @@ job "photocatalog-photoprism" {
       env {
         PHOTOPRISM_UPLOAD_NSFW       = true
         PHOTOPRISM_ADMIN_PASSWORD    = "insecure"
-        PHOTOPRISM_READONLY          = true
+        PHOTOPRISM_READONLY          = false
         PHOTOPRISM_WORKERS           = 2
         PHOTOPRISM_DATABASE_DRIVER   = "mysql"
         PHOTOPRISM_DATABASE_SERVER   = "database.photoprism.service.consul:3306"
