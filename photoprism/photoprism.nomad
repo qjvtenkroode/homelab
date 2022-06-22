@@ -1,5 +1,5 @@
 job "photocatalog-photoprism" {
-  datacenters = ["testing"]
+  datacenters = ["homelab"]
   type        = "service"
 
   group "photoprism" {
@@ -17,15 +17,15 @@ job "photocatalog-photoprism" {
         timeout  = "2s"
       }
 
-      name = "photoprism-test"
+      name = "photoprism"
       port = "photoprism"
 
       tags = [
-        "test-traefik.enable=true",
-        "test-traefik.http.routers.photoprism-http.entrypoints=web",
-        "test-traefik.http.routers.photoprism-http.rule=Host(`photoprism.test-qkroode.nl`)",
-        "test-traefik.http.routers.photoprism-http.service=photoprism",
-        "test-traefik.http.services.photoprism.loadbalancer.server.port=${NOMAD_HOST_PORT_photoprism}",
+        "traefik.enable=true",
+        "traefik.http.routers.photoprism-http.entrypoints=web",
+        "traefik.http.routers.photoprism-http.rule=Host(`photoprism.qkroode.nl`)",
+        "traefik.http.routers.photoprism-http.service=photoprism",
+        "traefik.http.services.photoprism.loadbalancer.server.port=${NOMAD_HOST_PORT_photoprism}",
       ]
     }
 
@@ -48,7 +48,7 @@ job "photocatalog-photoprism" {
         PHOTOPRISM_READONLY          = false
         PHOTOPRISM_WORKERS           = 2
         PHOTOPRISM_DATABASE_DRIVER   = "mysql"
-        PHOTOPRISM_DATABASE_SERVER   = "database.photoprism-test.service.consul:3306"
+        PHOTOPRISM_DATABASE_SERVER   = "database.photoprism.service.consul:3306"
         PHOTOPRISM_DATABASE_NAME     = "photoprism"
         PHOTOPRISM_DATABASE_USER     = "photoprism"
         PHOTOPRISM_DATABASE_PASSWORD = "insecure"

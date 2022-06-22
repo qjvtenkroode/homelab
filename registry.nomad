@@ -1,7 +1,7 @@
 # Description: private docker registry
 
-job "test-registry" {
-    datacenters = ["testing"]
+job "registry" {
+    datacenters = ["homelab"]
     type = "service"
 
     group "registry" {
@@ -17,15 +17,15 @@ job "test-registry" {
                 interval = "10s"
                 timeout = "2s"
             }
-            name = "registry-test"
+            name = "registry"
             port = "registry"
             tags = [
-                "test-traefik.enable=true",
-                "test-traefik.frontend.entryPoints=https",
-                "test-traefik.http.routers.registry-https.entrypoints=web",
-                "test-traefik.http.routers.registry-https.rule=Host(`registry.test-qkroode.nl`)",
-                "test-traefik.http.routers.registry-https.service=registry",
-                "test-traefik.http.services.registry.loadbalancer.server.port=${NOMAD_HOST_PORT_registry}"
+                "traefik.enable=true",
+                "traefik.frontend.entryPoints=https",
+                "traefik.http.routers.registry-https.entrypoints=web",
+                "traefik.http.routers.registry-https.rule=Host(`registry.qkroode.nl`)",
+                "traefik.http.routers.registry-https.service=registry",
+                "traefik.http.services.registry.loadbalancer.server.port=${NOMAD_HOST_PORT_registry}"
             ]
         }
         task "registry" {

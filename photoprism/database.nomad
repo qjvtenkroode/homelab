@@ -1,5 +1,5 @@
 job "photocatalog-database" {
-  datacenters = ["testing"]
+  datacenters = ["homelab"]
   type        = "service"
 
   group "mariadb" {
@@ -18,7 +18,7 @@ job "photocatalog-database" {
         timeout  = "2s"
       }
 
-      name = "photoprism-test"
+      name = "photoprism"
       port = "photoprism-database"
 
       tags = [
