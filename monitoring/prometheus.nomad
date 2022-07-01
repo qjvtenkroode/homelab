@@ -107,9 +107,9 @@ job "monitoring-prometheus" {
                         relabel_configs:
                         # expects tags for exports to be "exporters, <type_name>, ..."
                           - source_labels: ['__meta_consul_tags']
-                            regex: 'exporters, ([^,]+)'
+                            regex: '(.*)exporters\,([^\,]+)(.*)'
                             target_label: type
-                            replacement: $1
+                            replacement: $2
                       # default traefik data
                       - job_name: traefik
                         consul_sd_configs:
