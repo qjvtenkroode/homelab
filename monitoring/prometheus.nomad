@@ -115,6 +115,19 @@ job "monitoring-prometheus" {
                         consul_sd_configs:
                           - server: consul.service.consul:8500
                             services: [traefik-test]
+                      - job_name: shellies
+                        static_configs:
+                          - targets:
+                            - shelly1pm-b1e281.qkroode.nl
+                            - shelly1pm-6090fc.qkroode.nl
+                        metrics_path: /shelly/probe
+                        relabel_configs:
+                          - source_labels: [__address__]
+                            target_label: __param_target
+                          - source_labels: [__param_target]
+                            target_label: instance
+                          - target_label: __address__
+                            replacement: exporters.test-qkroode.nl
 #                      # solaredge inverter data through modbus exporter
 #                      - job_name: solaredge
 #                        scrape_interval: 5s
