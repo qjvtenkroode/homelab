@@ -40,6 +40,7 @@ job "monitoring-prometheus" {
         ports = ["promui"]
 
         volumes = [
+          "/mnt/prometheus:/prometheus",
           "local/prometheus.yml:/etc/prometheus/prometheus.yml:z",
           "local/rules.yml:/etc/prometheus/rules.yml:z",
         ]
@@ -50,9 +51,9 @@ job "monitoring-prometheus" {
         memory = 512
       }
 
+      # TODO: move to artifacts for source
       template {
         destination = "local/prometheus.yml"
-
         data = <<-EOF
                     global:
                       scrape_interval:     15s
@@ -61,41 +62,70 @@ job "monitoring-prometheus" {
                     rule_files:
                       - 'rules.yml'
 
-                    #alerting:
-                    #  alertmanagers:
-                    #    - static_configs:
-                    #      - targets:
-                    #      # TODO enable and change to using a Traefik endpoint
-                    #        - {{ env "NOMAD_HOST_ADDR_alertmanagerui" }}
+                    alerting:
+                      alertmanagers:
+                        - static_configs:
+                          - targets:
+                            - alertmanager.test-qkroode.nl
 
                     scrape_configs:
+                      # default prometheus data
                       - job_name: prometheus
                         static_configs:
                           - targets: ['localhost:9090']
-                      - job_name: solaredge
+                      # default nomad data
+                      - job_name: nomad
+                        metrics_path: /v1/metrics
                         scrape_interval: 5s
-                        static_configs:
-                          - targets: ['stargazer.qkroode.nl:2112']
-                      - job_name: node-exporter
+                        params:
+                          format: ["prometheus"]
                         consul_sd_configs:
                           - server: consul.service.consul:8500
-                            services: [node_exporter]
+                            services: ['nomad-client', 'nomad']
+                        relabel_configs:
+                          - source_labels: ['__meta_consul_tags']
+                            regex: '(.*)http(.*)'
+                            action: keep
+                      # default consul data
                       - job_name: consul
                         metrics_path: 'v1/agent/metrics'
                         params:
                           format: ["prometheus"]
                         static_configs:
                           - targets: ['dominion.qkroode.nl:8500']
+                      # node_exporter data
+                      - job_name: node_exporter
+                        consul_sd_configs:
+                          - server: consul.service.consul:8500
+                            services: [node_exporter]
+                      # exporters
+                      - job_name: exporters
+                        consul_sd_configs:
+                          - server: consul.service.consul:8500
+                            services: [monitoring]
+                            tags: [exporters]
+                        relabel_configs:
+                        # expects tags for exports to be "exporters, <type_name>, ..."
+                          - source_labels: ['__meta_consul_tags']
+                            regex: 'exporters, ([^,]+)'
+                            target_label: type
+                            replacement: $1
+                      # default traefik data
                       - job_name: traefik
                         consul_sd_configs:
                           - server: consul.service.consul:8500
                             services: [traefik-test]
+#                      # solaredge inverter data through modbus exporter
+#                      - job_name: solaredge
+#                        scrape_interval: 5s
+#                        static_configs:
+#                          - targets: ['stargazer.qkroode.nl:2112']
                                     EOF
       }
 
+      # TODO: move to artifacts for source
       template {
         destination = "local/rules.yml"
-
         data = <<-EOF
                     groups:
                     - name: PrometheusGroup
