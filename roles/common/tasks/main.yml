@@ -43,6 +43,18 @@
   pip:
     name: python-consul
 
+- name: Podman add private insecure repositories
+  copy:
+    src: private-testing.conf
+    dest: /etc/containers/registries.conf.d/private.conf
+  when: nomad_datacenter == "testing"
+
+- name: Podman add private insecure repositories
+  copy:
+    src: private.conf
+    dest: /etc/containers/registries.conf.d/private.conf
+  when: nomad_datacenter == "homelab"
+
 - name: Podman systemd enabled and started
   systemd:
     name: podman
