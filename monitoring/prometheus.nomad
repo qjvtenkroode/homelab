@@ -120,6 +120,8 @@ job "monitoring-prometheus" {
                           - targets:
                             - shelly1pm-b1e281.qkroode.nl
                             - shelly1pm-6090fc.qkroode.nl
+                            - shellydimmer2-e0980695af1a.qkroode.nl
+                            - shellydimmer2-e0980695add5.qkroode.nl
                         metrics_path: /shelly/probe
                         relabel_configs:
                           - source_labels: [__address__]

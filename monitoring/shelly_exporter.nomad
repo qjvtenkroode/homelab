@@ -38,7 +38,7 @@ job "shelly-exporter" {
             driver = "podman"
 
             config {
-                image = "registry.test-qkroode.nl/homelab/prometheus-shelly-exporter:b8c7993"
+                image = "registry.test-qkroode.nl/homelab/prometheus-shelly-exporter:788734d"
                 ports = ["shellyexportermetrics"]
             }
 
