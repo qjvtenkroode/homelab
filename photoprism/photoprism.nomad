@@ -33,7 +33,7 @@ job "photocatalog-photoprism" {
       driver = "podman"
 
       config {
-        image = "photoprism/photoprism:l220617-bookworm"
+        image = "photoprism/photoprism:220617-bookworm"
         ports = ["photoprism"]
 
         volumes = [
