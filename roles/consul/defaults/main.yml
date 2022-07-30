@@ -1,3 +1,4 @@
 ---
+consul_datacenter: ""
 consul_leader: ""
 consul_type: ""
