@@ -1,4 +1,4 @@
-advertise_addr = "{% raw %}{{ GetInterfaceIP \"eth0\" }}{% endraw %}"
+advertise_addr = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
 bind_addr = "0.0.0.0"
 client_addr = "0.0.0.0"
 datacenter = "{{ consul_datacenter }}"

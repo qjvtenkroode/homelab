@@ -128,6 +128,11 @@
             path: /mnt/originals
             state: directory
         
+        - name: NFS - Create directories - vaultwarden
+          file:
+            path: /mnt/vaultwarden
+            state: directory
+        
         - name: NFS mounting - homelab cluster
           block:
             - name: NFS - Mount - photoprism
@@ -193,6 +198,14 @@
               ansible.posix.mount:
                 src: truenas.qkroode.nl:/mnt/homelab/nomad-test/registry
                 path: /mnt/registry
+                fstype: nfs
+                opts: rw,sync
+                state: mounted
+
+            - name: NFS - Mount - vaultwarden
+              ansible.posix.mount:
+                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/vaultwarden
+                path: /mnt/vaultwarden
                 fstype: nfs
                 opts: rw,sync
                 state: mounted
