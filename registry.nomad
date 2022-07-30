@@ -31,7 +31,7 @@ job "registry" {
         task "registry" {
             driver = "podman"
             config {
-                image = "registry:latest"
+                image = "registry:2.8.1"
                 ports = ["registry"]
                 volumes = ["/mnt/registry:/var/lib/registry"]
             }

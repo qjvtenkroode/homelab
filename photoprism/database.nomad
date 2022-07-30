@@ -30,7 +30,7 @@ job "photocatalog-database" {
       driver = "podman"
 
       config {
-        image = "linuxserver/mariadb:latest"
+        image = "linuxserver/mariadb:10.5.16"
         ports = ["photoprism-database"]
 
         volumes = [
