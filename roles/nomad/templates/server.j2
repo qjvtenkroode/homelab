@@ -1,0 +1,10 @@
+advertise {
+  http = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
+  rpc  = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
+  serf = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
+}
+
+server {
+  enabled = true
+  bootstrap_expect = 3
+}
