@@ -1,8 +1,8 @@
 ---
 binary_dir: /usr/local/bin
 download_dir: /tmp
-  #consul_version: 1.9.6
-  #consul_checksum: sha256:f999955f135b3170108a0d1b7ca69a60dc80769e0b039f32f551fc8032d25f4b
-consul_version: 1.8.3
-consul_checksum: sha256:b72e9eac5405c691c2e3b50819900ca84a79f2f6e7d73aa91f2a336fc2bcacb0
+  #consul_version: 1.8.3
+  #consul_checksum: sha256:b72e9eac5405c691c2e3b50819900ca84a79f2f6e7d73aa91f2a336fc2bcacb0
+consul_version: 1.12.3
+consul_checksum: sha256:620a47cfba34bdf918b4c3238d22f6318b29403888cfd927c6006a4ac1b1c9f6
 consul_datacenter: homelab

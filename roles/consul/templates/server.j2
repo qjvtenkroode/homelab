@@ -1,11 +1,12 @@
 advertise_addr = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
 bind_addr = "0.0.0.0"
+bootstrap_expect = 3
 client_addr = "0.0.0.0"
 datacenter = "{{ consul_datacenter }}"
 data_dir = "/var/lib/consul"
+disable_remote_exec = true
+disable_update_check = true
+enable_syslog = true
+retry_join = ["consul.service.consul"]
 server = true
 ui = true
-bootstrap = false
-disable_update_check = true
-disable_remote_exec = true
-enable_syslog = true

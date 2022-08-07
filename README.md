@@ -8,20 +8,23 @@ Ansible playbook to setup my homelab nodes.
 - Ansible user is called 'overseer'
 
 ## Improvements / TODO's
-- Setup testing with Molocule?
+- [ ] Make network interface for Consul client and server templates dynamic
+- [ ] Create Hashicorp Vault role
+- [x] Add Consul retry_join server list
 
 ## Playbooks
 
 ### Deploy the backend
-First fill an `inventory.yml` with your hivemind (leaders), minions (other nodes) and overwrite any variables that are needed:
-    - consul_leader
+First fill an `inventory.yml` with your minions (nodes) and overwrite any variables that are needed:
+    - consul_datacenter 
     - consul_type
     - nomad_datacenter
-    - nomad_leader
     - nomad_type
 
 Then run the playbook:
 `ansible-playbook playbook-deploy-backend.yml -i inventory.yml -u overseer`
+
+Keep in mind that the first time running this playbook it is still needed to join the consul cluster together with a `consul join <node1> <node2> <node3>`
 
 ### Deploy a Nomad job
 Deploying a job doesn't need an inventory, it runs from localhost. Run the playbook and add additional variables that contain the job name:
