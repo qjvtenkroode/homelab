@@ -11,6 +11,8 @@ Ansible playbook to setup my homelab nodes.
 - [ ] Make network interface for Consul client and server templates dynamic
 - [ ] Create Hashicorp Vault role
 - [x] Add Consul retry_join server list
+- [ ] Make Consul join/create the cluster automatically through a var
+- [ ] Stop Consul, Nomad or Vault before upgrading
 
 ## Playbooks
 
