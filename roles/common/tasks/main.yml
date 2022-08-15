@@ -29,14 +29,19 @@
     name: tar
     state: present
 
-- name: Install helper packages - nfs-utils
+- name: Install helper packages - nfs-common
   apt:
-    name: nfs-utils
+    name: nfs-common
     state: present
 
 - name: Install packages - podman
   apt:
     name: podman
+    state: present
+
+- name: Install packages - python3-pip
+  apt:
+    name: python3-pip
     state: present
 
 - name: Install python module - python-consul
