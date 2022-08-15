@@ -2,7 +2,7 @@
 Ansible playbook to setup my homelab nodes.
 
 ## Assumptions
-- Every node runs Rocky Linux.
+- Every node runs Debian 11.
 - All are part of the Nomad, Consul, Vault cluster.
 - Monitoring is done through a Prometheus container running in Nomad.
 - Ansible user is called 'overseer'

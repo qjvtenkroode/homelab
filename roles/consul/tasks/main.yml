@@ -51,21 +51,6 @@
       notify:
         - Restart consul
 
-    - name: Firewalld - add consul service
-      copy:
-        src: consul.firewalld
-        dest: /etc/firewalld/services/consul.xml
-
-    - name: Firewalld - reload
-      command: firewall-cmd --reload
-
-    - name: Firewalld - add consul to zone
-      ansible.posix.firewalld:
-        service: consul
-        permanent: yes
-        state: enabled
-        immediate: true
- 
     - name: Consul systemd enabled and started
       systemd:
         name: consul

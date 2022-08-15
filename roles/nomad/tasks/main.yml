@@ -98,125 +98,110 @@
       notify:
         - Restart nomad
 
-    - name: Firewalld - add nomad service
-      copy:
-        src: nomad.firewalld
-        dest: /etc/firewalld/services/nomad.xml
-
-    - name: Firewalld - reload
-      command: firewall-cmd --reload
-
-    - name: Firewalld - add nomad to zone
-      ansible.posix.firewalld:
-        service: nomad
-        permanent: yes
-        state: enabled
-        immediate: true
-
-    - name: Setup NFS directories and mounts
-      block:
-        - name: NFS - Create directories - photoprism
-          file:
-            path: /mnt/photoprism
-            state: directory
-
-        - name: NFS - Create directories - prometheus
-          file:
-            path: /mnt/prometheus
-            state: directory
-
-        - name: NFS - Create directories - registry
-          file:
-            path: /mnt/registry
-            state: directory
-
-        - name: NFS - Create directories - orginals 
-          file:
-            path: /mnt/originals
-            state: directory
-        
-        - name: NFS - Create directories - vaultwarden
-          file:
-            path: /mnt/vaultwarden
-            state: directory
-        
-              #        - name: NFS mounting - homelab cluster
-              #          block:
-              #            - name: NFS - Mount - photoprism
-              #              ansible.posix.mount:
-              #                src: truenas.qkroode.nl:/mnt/homelab/nomad/photoprism
-              #                path: /mnt/photoprism
-              #                fstype: nfs
-              #                opts: rw,sync
-              #                state: mounted
-              #
-              #            - name: NFS - Mount - photoprism - original media
-              #              ansible.posix.mount:
-              #                src: truenas.qkroode.nl:/mnt/NAS/photo
-              #                path: /mnt/originals
-              #                fstype: nfs
-              #                opts: rw,sync
-              #                state: mounted
-              #             
-              #            - name: NFS - Mount - prometheus
-              #              ansible.posix.mount:
-              #                src: truenas.qkroode.nl:/mnt/homelab/nomad/prometheus
-              #                path: /mnt/prometheus
-              #                fstype: nfs
-              #                opts: rw,sync
-              #                state: mounted
-              #
-              #            - name: NFS - Mount - registry
-              #              ansible.posix.mount:
-              #                src: truenas.qkroode.nl:/mnt/homelab/nomad/registry
-              #                path: /mnt/registry
-              #                fstype: nfs
-              #                opts: rw,sync
-              #                state: mounted
-              #          when: nomad_datacenter == "homelab"
-
-            #        - name: NFS mounting - testing cluster
-            #          block:
-            #            - name: NFS - Mount - photoprism
-            #              ansible.posix.mount:
-            #                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photoprism
-            #                path: /mnt/photoprism
-            #                fstype: nfs
-            #                opts: rw,sync
-            #                state: mounted
-            #            
-            #            - name: NFS - Mount - photoprism - originals test
-            #              ansible.posix.mount:
-            #                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photos
-            #                path: /mnt/originals
-            #                fstype: nfs
-            #                opts: rw,sync
-            #                state: mounted
-            #            
-            #            - name: NFS - Mount - prometheus
-            #              ansible.posix.mount:
-            #                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/prometheus
-            #                path: /mnt/prometheus
-            #                fstype: nfs
-            #                opts: rw,sync
-            #                state: mounted
-            #
-            #            - name: NFS - Mount - registry
-            #              ansible.posix.mount:
-            #                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/registry
-            #                path: /mnt/registry
-            #                fstype: nfs
-            #                opts: rw,sync
-            #                state: mounted
-            #
-            #            - name: NFS - Mount - vaultwarden
-            #              ansible.posix.mount:
-            #                src: truenas.qkroode.nl:/mnt/homelab/nomad-test/vaultwarden
-            #                path: /mnt/vaultwarden
-            #                fstype: nfs
-            #                opts: rw,sync
-            #                state: mounted
-            #          when: nomad_datacenter == "testing"
+          #    - name: Setup NFS directories and mounts
+          #      block:
+          #        - name: NFS - Create directories - photoprism
+          #          file:
+          #            path: /mnt/photoprism
+          #            state: directory
+          #
+          #        - name: NFS - Create directories - prometheus
+          #          file:
+          #            path: /mnt/prometheus
+          #            state: directory
+          #
+          #        - name: NFS - Create directories - registry
+          #          file:
+          #            path: /mnt/registry
+          #            state: directory
+          #
+          #        - name: NFS - Create directories - orginals 
+          #          file:
+          #            path: /mnt/originals
+          #            state: directory
+          #        
+          #        - name: NFS - Create directories - vaultwarden
+          #          file:
+          #            path: /mnt/vaultwarden
+          #            state: directory
+          #        
+          #    - name: NFS mounting - homelab cluster
+          #      block:
+          #        - name: NFS - Mount - photoprism
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad/photoprism
+          #            path: /mnt/photoprism
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #
+          #        - name: NFS - Mount - photoprism - original media
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/NAS/photo
+          #            path: /mnt/originals
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #         
+          #        - name: NFS - Mount - prometheus
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad/prometheus
+          #            path: /mnt/prometheus
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #
+          #        - name: NFS - Mount - registry
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad/registry
+          #            path: /mnt/registry
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #      when: nomad_datacenter == "homelab"
+          #
+          #    - name: NFS mounting - testing cluster
+          #      block:
+          #        - name: NFS - Mount - photoprism
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photoprism
+          #            path: /mnt/photoprism
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #        
+          #        - name: NFS - Mount - photoprism - originals test
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/photos
+          #            path: /mnt/originals
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #        
+          #        - name: NFS - Mount - prometheus
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/prometheus
+          #            path: /mnt/prometheus
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #
+          #        - name: NFS - Mount - registry
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/registry
+          #            path: /mnt/registry
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #
+          #        - name: NFS - Mount - vaultwarden
+          #          ansible.posix.mount:
+          #            src: truenas.qkroode.nl:/mnt/homelab/nomad-test/vaultwarden
+          #            path: /mnt/vaultwarden
+          #            fstype: nfs
+          #            opts: rw,sync
+          #            state: mounted
+          #      when: nomad_datacenter == "testing"
     
     - name: Nomad systemd enabled and started
       systemd:

@@ -20,22 +20,22 @@
     msg: "{{ ansible_local.homelab }}"
 
 - name: Install helper packages - unzip
-  yum:
+  apt:
     name: unzip
     state: present
 
 - name: Install helper packages - tar
-  yum:
+  apt:
     name: tar
     state: present
 
 - name: Install helper packages - nfs-utils
-  yum:
+  apt:
     name: nfs-utils
     state: present
 
 - name: Install packages - podman
-  yum:
+  apt:
     name: podman
     state: present
 
@@ -60,11 +60,3 @@
     name: podman
     enabled: true
     state: started
-
-- name: Firewalld - add mysql to zone
-  ansible.posix.firewalld:
-    service: mysql
-    permanent: yes
-    state: enabled
-    immediate: true
-

@@ -39,21 +39,6 @@
         enabled: true
         state: started
     
-    - name: Firewalld - add node_exporter service
-      copy:
-        src: node_exporter.firewalld
-        dest: /etc/firewalld/services/node_exporter.xml
-
-    - name: Firewalld - reload
-      command: firewall-cmd --reload
-
-    - name: Firewalld - add node_exporter to zone
-      ansible.posix.firewalld:
-        service: node_exporter
-        permanent: yes
-        state: enabled
-        immediate: true
-    
     - name: Register node_exporter in Consul
       community.general.consul:
         service_name: node_exporter
