@@ -1,7 +1,7 @@
 # Description: Treafik as frontend proxy for all exposed services within Nomad cluster
 
-job "test-traefik" {
-    datacenters = ["testing"]
+job "traefik" {
+    datacenters = ["homelab"]
     type = "service"
 
     group "traefik" {
@@ -41,7 +41,7 @@ job "test-traefik" {
                     "--entryPoints.web.address=:80",
                     "--providers.consulcatalog",
                     # filter down to only test servics through a prefix
-                    "--providers.consulcatalog.prefix=test-traefik",
+                    "--providers.consulcatalog.prefix=traefik",
                     "--providers.consulcatalog.endpoint.address=consul.service.consul:8500",
                     "--providers.consulcatalog.endpoint.datacenter=homelab",
                     "--providers.consulcatalog.exposedByDefault=false"
