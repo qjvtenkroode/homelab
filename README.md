@@ -14,6 +14,7 @@ Ansible playbook to setup my homelab nodes.
 - [x] Add Consul retry_join server list
 - [ ] Make Consul join/create the cluster automatically through a var
 - [ ] Stop Consul, Nomad or Vault before upgrading
+- [ ] Vault integration in Nomad with role instead of requiring a root token variable
 
 ## Playbooks
 

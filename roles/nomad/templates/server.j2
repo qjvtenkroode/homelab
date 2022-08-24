@@ -8,3 +8,11 @@ server {
   enabled = true
   bootstrap_expect = 3
 }
+
+vault {
+  address     = "http://vault.service.consul:8200"
+  enabled     = true
+  token       = "{{ vault_token }}"
+}
+
+
