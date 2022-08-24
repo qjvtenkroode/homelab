@@ -1,0 +1,12 @@
+ui = true
+api_addr = "http://{{ ansible_default_ipv4.address }}:8200"
+
+listener "tcp" {
+  address = "{{ ansible_default_ipv4.address }}:8200"
+  tls_disable = true
+}
+
+storage "consul" {
+  address = "127.0.0.1:8500"
+  path    = "vault/"
+}

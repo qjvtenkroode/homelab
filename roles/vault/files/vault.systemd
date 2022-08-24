@@ -1,0 +1,14 @@
+[Unit]
+Description=Vault service mesh
+After=network.target
+StartLimitIntervalSec=1
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/local/bin/vault server -config=/etc/vault.d
+
+[Install]
+WantedBy=multi-user.target

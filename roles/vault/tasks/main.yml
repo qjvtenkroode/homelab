@@ -1,3 +1,4 @@
+---
 - name: Install Hashicorp stack - Vault
   block:
     - name: Download Vault - {{ vault_version }}
@@ -11,9 +12,39 @@
         src: "{{ download_dir }}/vault-{{ vault_version }}.zip"
         dest: "{{ binary_dir }}"
         remote_src: true
+      notify:
+        - Restart vault
 
     - name: Cleanup
       file:
         path: "{{ download_dir }}/vault-{{ vault_version }}.zip"
         state: absent
   when: ansible_local.homelab.vault_version != vault_version
+
+- name: Configure Hashicorp stack - Vault
+  block:
+    - name: Create config directory
+      file:
+        path: /etc/vault.d
+        state: directory
+ 
+    - name: Vault server config
+      template:
+        src: templates/server.j2
+        dest: /etc/vault.d/server.hcl
+      notify:
+        - Restart vault
+      when: vault_type == "server"
+
+    - name: Vault setup systemd
+      copy:
+        src: vault.systemd
+        dest: /etc/systemd/system/vault.service
+      notify:
+        - Restart vault
+
+    - name: Vault systemd enabled and started
+      systemd:
+        name: vault
+        enabled: true
+        state: started
