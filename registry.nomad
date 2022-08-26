@@ -31,14 +31,25 @@ job "registry" {
         task "registry" {
             driver = "podman"
             config {
-                image = "registry:2.8.1"
+                image = "docker.io/library/registry:2.8.1"
                 ports = ["registry"]
-                volumes = ["/mnt/registry:/var/lib/registry"]
             }
             resources {
                 cpu = 100
                 memory = 64
             }
+            volume_mount {
+                volume = "registry"
+                destination = "/var/lib/registry"
+                read_only = false
+            }
+        }
+        volume "registry" {
+            type = "csi"
+            read_only = false
+            source = "registry"
+            access_mode = "single-node-writer"
+            attachment_mode = "file-system"
         }
     }
 }
