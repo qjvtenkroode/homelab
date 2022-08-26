@@ -2,7 +2,7 @@
 
 job "traefik" {
     datacenters = ["homelab"]
-    type = "service"
+    type = "system"
 
     group "traefik" {
         network {
@@ -22,7 +22,7 @@ job "traefik" {
                 interval = "10s"
                 timeout = "2s"
             }
-            name = "traefik-test"
+            name = "traefik"
             port = "ui"
             tags = [
                 "traefik.enable=true",
@@ -32,7 +32,7 @@ job "traefik" {
         task "traefik" {
             driver = "podman"
             config {
-                image = "traefik:v2.6"
+                image = "docker.io/library/traefik:v2.6"
                 ports = ["http", "ui"]
                 args = [
                     "--api.insecure=true",
@@ -40,7 +40,6 @@ job "traefik" {
                     "--metrics.prometheus.addrouterslabels=true",
                     "--entryPoints.web.address=:80",
                     "--providers.consulcatalog",
-                    # filter down to only test servics through a prefix
                     "--providers.consulcatalog.prefix=traefik",
                     "--providers.consulcatalog.endpoint.address=consul.service.consul:8500",
                     "--providers.consulcatalog.endpoint.datacenter=homelab",
@@ -52,6 +51,22 @@ job "traefik" {
                 cpu = 100
                 memory = 64
             }
+
+            template {
+                change_mode = "restart"
+                destination = "local/values.env"
+                env = true
+
+                data = <<EOF
+{{ with secret "kv/data/letsencrypt/digitalocean" }}
+DO_AUTH_TOKEN = "{{ .Data.data.token }}"{{ end }}
+EOF
+            }
+
+            vault {
+                policies = ["homelab"]
+            }
         }
+
     }
 }
