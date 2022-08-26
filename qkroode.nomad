@@ -39,7 +39,7 @@ job "qkroode.nl" {
             driver = "podman"
 
             config {
-                image = "registry.service.consul:5000/homelab/qkroode.nl:0.79.0-2030477"
+                image = "registry.qkroode.nl/homelab/qkroode.nl:0.79.0-2030477"
                 ports = ["http"]
             }
             resources {

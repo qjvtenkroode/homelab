@@ -10,6 +10,10 @@ job "traefik" {
                 static = 80
                 to = 80
             }
+            port "https" {
+                static = 443
+                to = 443
+            }
             port "ui" {
                 static = 8080
                 to = 8080
@@ -33,12 +37,18 @@ job "traefik" {
             driver = "podman"
             config {
                 image = "docker.io/library/traefik:v2.6"
-                ports = ["http", "ui"]
+                ports = ["http", "https", "ui"]
                 args = [
+                    "--accesslog=true",
                     "--api.insecure=true",
+                    "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=digitalocean",
+                    "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=0",
+                    "--certificatesresolvers.letsencrypt.acme.email=qjv.tenkroode@gmail.com",
+                    "--certificatesresolvers.letsencrypt.acme.storage=acme.json",
                     "--metrics.prometheus=true",
                     "--metrics.prometheus.addrouterslabels=true",
                     "--entryPoints.web.address=:80",
+                    "--entryPoints.websecure.address=:443",
                     "--providers.consulcatalog",
                     "--providers.consulcatalog.prefix=traefik",
                     "--providers.consulcatalog.endpoint.address=consul.service.consul:8500",
