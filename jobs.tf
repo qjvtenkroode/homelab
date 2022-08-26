@@ -13,3 +13,7 @@ resource "nomad_job" "traefik" {
 resource "nomad_job" "registry" {
     jobspec = file("${path.module}/../homelab-nomad/registry.nomad")
 }
+
+resource "nomad_job" "qkroode" {
+    jobspec = file("${path.module}/../homelab-nomad/qkroode.nomad")
+}
