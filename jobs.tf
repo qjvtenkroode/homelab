@@ -1,13 +1,13 @@
-resource "nomad_job" "storage-controller" {
-    jobspec = file("${path.module}/../homelab-nomad/csi/storage-controller.nomad")
+resource "nomad_job" "plugin-nfs-controller" {
+    jobspec = file("${path.module}/../homelab-nomad/csi/plugin-nfs-controller.nomad")
 }
 
-resource "nomad_job" "storage-node" {
-    jobspec = file("${path.module}/../homelab-nomad/csi/storage-node.nomad")
+resource "nomad_job" "plugin-nfs-node" {
+    jobspec = file("${path.module}/../homelab-nomad/csi/plugin-nfs-node.nomad")
 }
 
-resource "nomad_job" "traefik" {
-    jobspec = file("${path.module}/../homelab-nomad/traefik.nomad")
+resource "nomad_job" "fabio" {
+    jobspec = file("${path.module}/../homelab-nomad/fabio.nomad")
 }
 
 resource "nomad_job" "registry" {
@@ -16,4 +16,8 @@ resource "nomad_job" "registry" {
 
 resource "nomad_job" "qkroode" {
     jobspec = file("${path.module}/../homelab-nomad/qkroode.nomad")
+}
+
+resource "nomad_job" "vaultwarden" {
+    jobspec = file("${path.module}/../homelab-nomad/vaultwarden.nomad")
 }

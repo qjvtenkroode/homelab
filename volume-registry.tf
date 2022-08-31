@@ -1,6 +1,6 @@
 resource "nomad_volume" "registry" {
   type                  = "csi"
-  plugin_id             = "truenas"
+  plugin_id             = "nfs"
   volume_id             = "registry"
   name                  = "registry"
   external_id           = "registry"
@@ -16,8 +16,6 @@ resource "nomad_volume" "registry" {
   }
 
   context = {
-    node_attach_driver = "nfs"
-    provisioner_driver = "freenas-nfs"
     server             = "truenas.qkroode.nl"
     share              = "/mnt/homelab/csi/vols/registry"
   }
@@ -25,7 +23,7 @@ resource "nomad_volume" "registry" {
 
 resource "nomad_volume" "prometheus" {
   type                  = "csi"
-  plugin_id             = "truenas"
+  plugin_id             = "nfs"
   volume_id             = "prometheus"
   name                  = "prometheus"
   external_id           = "prometheus"
@@ -41,8 +39,6 @@ resource "nomad_volume" "prometheus" {
   }
 
   context = {
-    node_attach_driver = "nfs"
-    provisioner_driver = "freenas-nfs"
     server             = "truenas.qkroode.nl"
     share              = "/mnt/homelab/csi/vols/prometheus"
   }
@@ -50,7 +46,7 @@ resource "nomad_volume" "prometheus" {
 
 resource "nomad_volume" "vaultwarden" {
   type                  = "csi"
-  plugin_id             = "truenas"
+  plugin_id             = "nfs"
   volume_id             = "vaultwarden"
   name                  = "vaultwarden"
   external_id           = "vaultwarden"
@@ -66,8 +62,6 @@ resource "nomad_volume" "vaultwarden" {
   }
 
   context = {
-    node_attach_driver = "nfs"
-    provisioner_driver = "freenas-nfs"
     server             = "truenas.qkroode.nl"
     share              = "/mnt/homelab/csi/vols/vaultwarden"
   }
