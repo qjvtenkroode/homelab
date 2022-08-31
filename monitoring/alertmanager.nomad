@@ -33,14 +33,14 @@ job "monitoring-alertmanager" {
     }
 
     task "alertmanager" {
-      driver = "podman"
+      driver = "docker"
 
       config {
         image   = "prom/alertmanager:v0.23.0"
         ports   = ["alertmanagerui"]
         volumes = []
 
-        #                  "local/alertmanager.yml:/etc/alertmanager/alertmanager.yml:z",
+      #                  "local/alertmanager.yml:/etc/alertmanager/alertmanager.yml:z",
       }
 
       resources {

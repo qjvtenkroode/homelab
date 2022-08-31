@@ -33,7 +33,35 @@ job "monitoring-prometheus" {
     }
 
     task "prometheus" {
-      driver = "podman"
+      driver = "docker"
+
+      artifact {
+        source = "s3::http://truenas.qkroode.nl:9000/prometheus-test/prometheus.yml"
+        destination = "local/"
+        options {
+            aws_access_key_id = "minio"
+            aws_access_key_secret = "homelabminio"
+            #aws_access_key_id = "${MINIO_ID}"
+            #aws_access_key_secret = "${MINIO_SECRET}"
+        }
+      }
+           # template {
+           #     change_mode = "restart"
+           #     destination = "local/values.env"
+           #     env = true
+
+           #     data = <<EOF
+#{{ with secret "secret/minio" }}
+#MINIO_ID = "{{ .Data.id }}"
+#MINIO_SECRET = "{{ .Data.secret }}"
+#{{ end }}
+#EOF
+           # }
+
+            #vault {
+            #    policies = ["homelab"]
+            #}
+
 
       config {
         image = "prom/prometheus:v2.33.3"
@@ -49,93 +77,6 @@ job "monitoring-prometheus" {
       resources {
         cpu    = 512
         memory = 512
-      }
-
-      # TODO: move to artifacts for source
-      template {
-        destination = "local/prometheus.yml"
-        data = <<-EOF
-                    global:
-                      scrape_interval:     15s
-                      evaluation_interval: 15s
-
-                    rule_files:
-                      - 'rules.yml'
-
-                    alerting:
-                      alertmanagers:
-                        - static_configs:
-                          - targets:
-                            - alertmanager.test-qkroode.nl
-
-                    scrape_configs:
-                      # default prometheus data
-                      - job_name: prometheus
-                        static_configs:
-                          - targets: ['localhost:9090']
-                      # default nomad data
-                      - job_name: nomad
-                        metrics_path: /v1/metrics
-                        scrape_interval: 5s
-                        params:
-                          format: ["prometheus"]
-                        consul_sd_configs:
-                          - server: consul.service.consul:8500
-                            services: ['nomad-client', 'nomad']
-                        relabel_configs:
-                          - source_labels: ['__meta_consul_tags']
-                            regex: '(.*)http(.*)'
-                            action: keep
-                      # default consul data
-                      - job_name: consul
-                        metrics_path: 'v1/agent/metrics'
-                        params:
-                          format: ["prometheus"]
-                        static_configs:
-                          - targets: ['dominion.qkroode.nl:8500']
-                      # node_exporter data
-                      - job_name: node_exporter
-                        consul_sd_configs:
-                          - server: consul.service.consul:8500
-                            services: [node_exporter]
-                      # exporters
-                      - job_name: exporters
-                        consul_sd_configs:
-                          - server: consul.service.consul:8500
-                            services: [monitoring]
-                            tags: [exporters]
-                        relabel_configs:
-                        # expects tags for exports to be "exporters, <type_name>, ..."
-                          - source_labels: ['__meta_consul_tags']
-                            regex: '(.*)exporters\,([^\,]+)(.*)'
-                            target_label: type
-                            replacement: $2
-                      # default traefik data
-                      - job_name: traefik
-                        consul_sd_configs:
-                          - server: consul.service.consul:8500
-                            services: [traefik-test]
-                      - job_name: shellies
-                        static_configs:
-                          - targets:
-                            - shelly1pm-b1e281.qkroode.nl
-                            - shelly1pm-6090fc.qkroode.nl
-                            - shellydimmer2-e0980695af1a.qkroode.nl
-                            - shellydimmer2-e0980695add5.qkroode.nl
-                        metrics_path: /shelly/probe
-                        relabel_configs:
-                          - source_labels: [__address__]
-                            target_label: __param_target
-                          - source_labels: [__param_target]
-                            target_label: instance
-                          - target_label: __address__
-                            replacement: exporters.test-qkroode.nl
-#                      # solaredge inverter data through modbus exporter
-#                      - job_name: solaredge
-#                        scrape_interval: 5s
-#                        static_configs:
-#                          - targets: ['stargazer.qkroode.nl:2112']
-                                    EOF
       }
 
       # TODO: move to artifacts for source

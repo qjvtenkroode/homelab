@@ -27,7 +27,7 @@ job "photocatalog-database" {
     }
 
     task "mariadb" {
-      driver = "podman"
+      driver = "docker"
 
       config {
         image = "linuxserver/mariadb:10.5.16"

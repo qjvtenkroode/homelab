@@ -8,6 +8,7 @@ job "registry" {
         network {
             port "registry" {
                 to = 5000
+                static = 5000
             }
         }
         service  {
@@ -20,16 +21,11 @@ job "registry" {
             name = "registry"
             port = "registry"
             tags = [
-                "traefik.enable=true",
-                "traefik.frontend.entryPoints=https",
-                "traefik.http.routers.registry-https.entrypoints=web",
-                "traefik.http.routers.registry-https.rule=Host(`registry.qkroode.nl`)",
-                "traefik.http.routers.registry-https.service=registry",
-                "traefik.http.services.registry.loadbalancer.server.port=${NOMAD_HOST_PORT_registry}"
+                "urlprefix-registry.qkroode.nl/"
             ]
         }
         task "registry" {
-            driver = "podman"
+            driver = "docker"
             config {
                 image = "docker.io/library/registry:2.8.1"
                 ports = ["registry"]

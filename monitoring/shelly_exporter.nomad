@@ -35,7 +35,7 @@ job "shelly-exporter" {
         }
 
         task "shelly-exporter" {
-            driver = "podman"
+            driver = "docker"
 
             config {
                 image = "registry.test-qkroode.nl/homelab/prometheus-shelly-exporter:788734d"

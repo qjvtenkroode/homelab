@@ -32,7 +32,7 @@ job "monitoring-grafana" {
     }
 
     task "grafana" {
-      driver = "podman"
+      driver = "docker"
 
       config {
         image = "grafana/grafana-oss:8.4.3"

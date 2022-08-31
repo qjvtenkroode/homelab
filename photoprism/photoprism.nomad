@@ -30,7 +30,7 @@ job "photocatalog-photoprism" {
     }
 
     task "photoprism" {
-      driver = "podman"
+      driver = "docker"
 
       config {
         image = "photoprism/photoprism:220617-bookworm"
