@@ -34,9 +34,9 @@
     name: nfs-common
     state: present
 
-- name: Install packages - podman
+- name: Install packages - docker.io
   apt:
-    name: podman
+    name: docker.io
     state: present
 
 - name: Install packages - python3-pip
@@ -48,20 +48,14 @@
   pip:
     name: python-consul
 
-- name: Podman add private insecure repositories
+- name: docker add private insecure repositories
   copy:
-    src: private-testing.conf
-    dest: /etc/containers/registries.conf.d/private.conf
-  when: nomad_datacenter == "testing"
-
-- name: Podman add private insecure repositories
-  copy:
-    src: private.conf
-    dest: /etc/containers/registries.conf.d/private.conf
+    src: daemon.json
+    dest: /etc/docker/daemon.json
   when: nomad_datacenter == "homelab"
 
-- name: Podman systemd enabled and started
+- name: Docker.io systemd enabled and started
   systemd:
-    name: podman
+    name: docker
     enabled: true
     state: started

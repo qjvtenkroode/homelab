@@ -1,0 +1,3 @@
+{
+	"insecure-registries" : ["registry.service.consul:5000","registry.qkroode.nl"]
+}
