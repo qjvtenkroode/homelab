@@ -48,6 +48,7 @@ job "fabio" {
                 destination = "local/fabio.properties"
                 data = <<-EOF
                     metrics.target = prometheus
+                    metrics.prefix = {{`{{clean .Exec}}`}}
                     proxy.cs = cs=mycerts;type=consul;cert=http://localhost:8500/v1/kv/fabio/cert
                     proxy.addr = :9999;cs=mycerts,:8000;proto=prometheus
                 EOF

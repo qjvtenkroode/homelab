@@ -1,0 +1,58 @@
+# Description: $TITLE$ for selfhosted password management
+
+job "$TITLE$" {
+    datacenters = ["homelab"]
+    group "$TITLE$" {
+        network {
+            port "$PORT$" {
+                static =
+                to = 
+            }
+        }
+        service {
+            check {
+                interval = "10s"
+                timeout = "2s"
+                type = "tcp"
+            }
+            name = "$TITLE$"
+            port = "$PORT$"
+            tags = [
+                "urlprefix-/",
+            ]
+        }
+        task "$TITLE$" {
+            config {
+                image = ""
+                network_mode = "bridge"
+                ports = ["$PORT$"]
+                privileged = false
+                volumes = [""]
+            }
+            driver = "docker"
+            env {}
+            resources {
+                cpu = 
+                memory = 
+            }
+            template {
+                data = <<-EOF
+                EOF
+                destination = "asd"
+            }
+            volume_mount {
+                destination = ""
+                read_only = false
+                volume = "$TITLE$"
+            }
+        }
+        volume "$TITLE$" {
+            access_mode = "single-node-writer"
+            attachment_mode = "file-system"
+            read_only = false
+            source = "$TITLE$"
+            type = "csi"
+        }
+    }
+    type = "service"
+}
