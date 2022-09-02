@@ -9,4 +9,8 @@ disable_update_check = true
 enable_syslog = true
 retry_join = ["consul.service.consul"]
 server = true
+telemetry {
+    prometheus_retention_time = "30s"
+    disable_hostname = true
+}
 ui = true
