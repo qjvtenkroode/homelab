@@ -21,3 +21,11 @@ resource "nomad_job" "qkroode" {
 resource "nomad_job" "vaultwarden" {
     jobspec = file("${path.module}/../homelab-nomad/vaultwarden.nomad")
 }
+
+resource "nomad_job" "homeassistant" {
+    jobspec = file("${path.module}/../homelab-nomad/homeassistant.nomad")
+}
+
+resource "nomad_job" "prometheus" {
+    jobspec = file("${path.module}/../homelab-nomad/monitoring/prometheus.nomad")
+}

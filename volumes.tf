@@ -1,9 +1,9 @@
-resource "nomad_volume" "registry" {
+resource "nomad_volume" "homeassistant" {
   type                  = "csi"
   plugin_id             = "nfs"
-  volume_id             = "registry"
-  name                  = "registry"
-  external_id           = "registry"
+  volume_id             = "homeassistant"
+  name                  = "homeassistant"
+  external_id           = "homeassistant"
   deregister_on_destroy = true
 
   capability {
@@ -17,7 +17,7 @@ resource "nomad_volume" "registry" {
 
   context = {
     server             = "truenas.qkroode.nl"
-    share              = "/mnt/homelab/csi/vols/registry"
+    share              = "/mnt/homelab/csi/vols/homeassistant"
   }
 }
 
@@ -41,6 +41,29 @@ resource "nomad_volume" "prometheus" {
   context = {
     server             = "truenas.qkroode.nl"
     share              = "/mnt/homelab/csi/vols/prometheus"
+  }
+}
+
+resource "nomad_volume" "registry" {
+  type                  = "csi"
+  plugin_id             = "nfs"
+  volume_id             = "registry"
+  name                  = "registry"
+  external_id           = "registry"
+  deregister_on_destroy = true
+
+  capability {
+    access_mode           = "single-node-writer"
+    attachment_mode       = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+  }
+
+  context = {
+    server             = "truenas.qkroode.nl"
+    share              = "/mnt/homelab/csi/vols/registry"
   }
 }
 
