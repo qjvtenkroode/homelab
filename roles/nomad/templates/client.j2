@@ -3,4 +3,7 @@ client {
   template {
     disable_file_sandbox = true
   }
+{% if dedicated_photoprism is defined %}
+{% include 'host_volumes.j2' %}  
+{% endif %}
 }

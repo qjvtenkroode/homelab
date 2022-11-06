@@ -53,14 +53,6 @@
         - Restart nomad
       when: nomad_type == "server"
 
-    - name: Nomad host volumes
-      template:
-        src: templates/host_volumes.j2
-        dest: /etc/nomad.d/host_volumes.hcl
-      notify:
-        - Restart nomad
-      when: dedicated_photoprism is defined
-
     - name: Nomad setup systemd for server
       copy:
         src: nomad-server.systemd
@@ -84,9 +76,14 @@
             path: /mnt/originals
             state: directory
 
-        - name: Create directories - photoprism 
+        - name: Create directories - photoprism app
           file:
-            path: /opt/photoprism
+            path: /opt/photoprism/app
+            state: directory
+
+        - name: Create directories - photoprism db
+          file:
+            path: /opt/photoprism/db
             state: directory
 
         - name: NFS - Mount - photoprism - original media
