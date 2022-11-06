@@ -3,7 +3,11 @@
   become: yes
   roles:
     - common
-    - nomad
     - consul
-    - vault
     - node_exporter
+
+- hosts: minions
+  become: yes
+  roles:
+    - nomad
+    - vault

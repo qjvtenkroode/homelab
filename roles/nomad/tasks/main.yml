@@ -1,4 +1,7 @@
 ---
+- name: Install Docker
+  import_tasks: docker.yml
+
 - name: Install Hashicorp stack - Nomad
   block:
     - name: Download Nomad - {{ nomad_version }}

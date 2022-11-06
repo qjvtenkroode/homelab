@@ -1,0 +1,17 @@
+---
+- name: Install packages - docker.io
+  apt:
+    name: docker.io
+    state: present
+
+- name: docker add private insecure repositories
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+  when: nomad_datacenter == "homelab"
+
+- name: Docker.io systemd enabled and started
+  systemd:
+    name: docker
+    enabled: true
+    state: started

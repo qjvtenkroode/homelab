@@ -34,11 +34,6 @@
     name: nfs-common
     state: present
 
-- name: Install packages - docker.io
-  apt:
-    name: docker.io
-    state: present
-
 - name: Install packages - python3-pip
   apt:
     name: python3-pip
@@ -47,15 +42,3 @@
 - name: Install python module - python-consul
   pip:
     name: python-consul
-
-- name: docker add private insecure repositories
-  copy:
-    src: daemon.json
-    dest: /etc/docker/daemon.json
-  when: nomad_datacenter == "homelab"
-
-- name: Docker.io systemd enabled and started
-  systemd:
-    name: docker
-    enabled: true
-    state: started

@@ -1,7 +1,7 @@
 advertise {
-  http = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
-  rpc  = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
-  serf = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
+  http = "{{ ansible_default_ipv4.address }}"
+  rpc  = "{{ ansible_default_ipv4.address }}"
+  serf = "{{ ansible_default_ipv4.address }}"
 }
 
 server {

@@ -1,4 +1,4 @@
-advertise_addr = "{% raw %}{{ GetInterfaceIP \"eno1\" }}{% endraw %}"
+advertise_addr = "{{ ansible_default_ipv4.address }}"
 bind_addr = "0.0.0.0"
 bootstrap_expect = 3
 client_addr = "0.0.0.0"

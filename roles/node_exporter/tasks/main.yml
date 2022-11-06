@@ -47,4 +47,4 @@
         interval: 10s
         timeout: 5s
         check_name: "Check /metrics page"
-        http: "http://{{ ansible_eno1.ipv4.address }}:9100/metrics"
+        http: "http://{{ ansible_default_ipv4.address }}:9100/metrics"
