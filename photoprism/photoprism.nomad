@@ -21,11 +21,7 @@ job "photocatalog-photoprism" {
       port = "photoprism"
 
       tags = [
-        "traefik.enable=true",
-        "traefik.http.routers.photoprism-http.entrypoints=web",
-        "traefik.http.routers.photoprism-http.rule=Host(`photoprism.qkroode.nl`)",
-        "traefik.http.routers.photoprism-http.service=photoprism",
-        "traefik.http.services.photoprism.loadbalancer.server.port=${NOMAD_HOST_PORT_photoprism}",
+        "urlprefix-photoprism.qkroode.nl/"
       ]
     }
 
@@ -35,11 +31,6 @@ job "photocatalog-photoprism" {
       config {
         image = "photoprism/photoprism:220617-bookworm"
         ports = ["photoprism"]
-
-        volumes = [
-          "/mnt/originals:/photoprism/originals",
-          "/mnt/photoprism:/photoprism/storage",
-        ]
       }
 
       env {
@@ -58,6 +49,27 @@ job "photocatalog-photoprism" {
         cpu    = 2048
         memory = 2048
       }
+      
+      volume_mount {
+        volume = "photoprism-app"
+        destination = "/photoprism/storage"
+        read_only = "false"
+      }
+      volume_mount {
+        volume = "photoprism-originals"
+        destination = "/photoprism/originals"
+        read_only = "false"
+      }
+    }
+    volume "photoprism-app" {
+      type = "host"
+      read_only = false
+      source = "photoprism-app"
+    }
+    volume "photoprism-originals" {
+      type = "host"
+      read_only = false
+      source = "photoprism-originals"
     }
   }
 }

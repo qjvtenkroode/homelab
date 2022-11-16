@@ -4,7 +4,7 @@ job "photocatalog-database" {
 
   group "mariadb" {
     network {
-      port "photoprism-database" {
+      port "photoprism_database" {
         static = 3306
         to     = 3306
       }
@@ -19,7 +19,7 @@ job "photocatalog-database" {
       }
 
       name = "photoprism"
-      port = "photoprism-database"
+      port = "photoprism_database"
 
       tags = [
         "database",
@@ -31,11 +31,7 @@ job "photocatalog-database" {
 
       config {
         image = "linuxserver/mariadb:10.5.16"
-        ports = ["photoprism-database"]
-
-        volumes = [
-          "/mnt/photoprism/database:/config",
-        ]
+        ports = ["photoprism_database"]
       }
 
       env {
@@ -50,6 +46,18 @@ job "photocatalog-database" {
         cpu    = 512
         memory = 512
       }
+
+      volume_mount {
+        volume = "photoprism-db"
+        destination = "/config"
+        read_only = "false"
+      }
+    }
+
+    volume "photoprism-db" {
+      type = "host"
+      read_only = false
+      source = "photoprism-db"
     }
   }
 }
