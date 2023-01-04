@@ -1,4 +1,4 @@
-# Description: $TITLE$ for selfhosted password management
+# Description: $TITLE$ for ...
 
 job "$TITLE$" {
     datacenters = ["homelab"]
