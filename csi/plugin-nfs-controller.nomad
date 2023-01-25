@@ -10,7 +10,7 @@ job "plugin-nfs-controller" {
 
         args = [
           "--endpoint=unix://csi/csi.sock",
-          "--nodeid=contoller",
+          "--nodeid=controller",
           "--logtostderr",
           "-v=5",
         ]

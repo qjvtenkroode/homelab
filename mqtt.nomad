@@ -17,7 +17,7 @@ job "mosquitto" {
             name = "mosquitto"
             port = "mqtt"
             tags = [
-                "urlprefix-/",
+                "urlprefix-mqtt.qkroode.nl:1883 proto=tcp",
             ]
         }
         task "mosquitto" {
@@ -28,7 +28,6 @@ job "mosquitto" {
                 privileged = false
             }
             driver = "docker"
-            env {}
             resources {
                 cpu = 100
                 memory = 100

@@ -12,7 +12,7 @@ job "plugin-nfs-nodes" {
 
         args = [
           "--endpoint=unix://csi/csi.sock",
-          "--nodeid=nfs-test",
+          "--nodeid=nfs-node",
           "--logtostderr",
           "--v=5",
         ]
