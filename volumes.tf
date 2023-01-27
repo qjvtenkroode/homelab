@@ -1,3 +1,9 @@
+data "nomad_plugin" "nfs" {
+  plugin_id        = "nfs"
+  wait_for_healthy = true
+  depends_on       = [nomad_job.plugin-nfs-controller,nomad_job.plugin-nfs-node]
+}
+
 resource "nomad_volume" "homeassistant" {
   type                  = "csi"
   plugin_id             = "nfs"
@@ -5,6 +11,7 @@ resource "nomad_volume" "homeassistant" {
   name                  = "homeassistant"
   external_id           = "homeassistant"
   deregister_on_destroy = true
+  depends_on            = [data.nomad_plugin.nfs]
 
   capability {
     access_mode           = "single-node-writer"
@@ -28,6 +35,7 @@ resource "nomad_volume" "prometheus" {
   name                  = "prometheus"
   external_id           = "prometheus"
   deregister_on_destroy = true
+  depends_on            = [data.nomad_plugin.nfs]
 
   capability {
     access_mode           = "single-node-writer"
@@ -51,6 +59,7 @@ resource "nomad_volume" "registry" {
   name                  = "registry"
   external_id           = "registry"
   deregister_on_destroy = true
+  depends_on            = [data.nomad_plugin.nfs]
 
   capability {
     access_mode           = "single-node-writer"
@@ -74,6 +83,7 @@ resource "nomad_volume" "vaultwarden" {
   name                  = "vaultwarden"
   external_id           = "vaultwarden"
   deregister_on_destroy = true
+  depends_on            = [data.nomad_plugin.nfs]
 
   capability {
     access_mode           = "single-node-writer"
