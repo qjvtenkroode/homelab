@@ -17,7 +17,7 @@ job "mosquitto" {
             name = "mosquitto"
             port = "mqtt"
             tags = [
-                "urlprefix-mqtt.qkroode.nl:1883 proto=tcp",
+                "urlprefix-:1883 proto=tcp",
             ]
         }
         task "mosquitto" {

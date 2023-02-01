@@ -19,9 +19,13 @@ job "fabio" {
                 static = 9998
                 to = 9998
             }
-            port "http" {
+            port "https" {
                 static = 9999
                 to = 9999
+            }
+            port "http" {
+                static = 80
+                to = 80
             }
         }
         service  {
@@ -39,7 +43,7 @@ job "fabio" {
             driver = "docker"
             config {
                 image = "docker.io/fabiolb/fabio:latest"
-                ports = ["metrics","ui","http", "mqtt"]
+                ports = ["metrics","mqtt","ui","https","http"]
                 args = []
                 network_mode = "host"
                 volumes = ["local/fabio.properties:/etc/fabio/fabio.properties:z"]
@@ -54,7 +58,7 @@ job "fabio" {
                     metrics.target = prometheus
                     metrics.prefix = {{`{{clean .Exec}}`}}
                     proxy.cs = cs=mycerts;type=consul;cert=http://localhost:8500/v1/kv/fabio/cert
-                    proxy.addr = :1883;proto=tcp,:9999;cs=mycerts,:8000;proto=prometheus
+                    proxy.addr = :80,:1883;proto=tcp,:9999;cs=mycerts,:8000;proto=prometheus
                 EOF
             }
         }
