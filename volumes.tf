@@ -99,3 +99,27 @@ resource "nomad_volume" "vaultwarden" {
     share              = "/mnt/homelab/csi/vols/vaultwarden"
   }
 }
+
+resource "nomad_volume" "cribl" {
+  type                  = "csi"
+  plugin_id             = "nfs"
+  volume_id             = "cribl"
+  name                  = "cribl"
+  external_id           = "cribl"
+  deregister_on_destroy = true
+  depends_on            = [data.nomad_plugin.nfs]
+
+  capability {
+    access_mode           = "single-node-writer"
+    attachment_mode       = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+  }
+
+  context = {
+    server             = "truenas.qkroode.nl"
+    share              = "/mnt/homelab/csi/vols/cribl"
+  }
+}

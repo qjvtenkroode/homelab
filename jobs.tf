@@ -17,6 +17,7 @@ resource "nomad_job" "registry" {
 
 resource "nomad_job" "cribl" {
     jobspec = file("${path.module}/../homelab-nomad/cribl.nomad")
+    depends_on = [nomad_volume.cribl]
 }
 
 resource "nomad_job" "qkroode" {
@@ -39,13 +40,9 @@ resource "nomad_job" "homeassistant" {
 #    depends_on = [nomad_volume.prometheus]
 #}
 
-#resource "nomad_job" "photocatalog-database" {
-#    jobspec = file("${path.module}/../homelab-nomad/photoprism/database.nomad")
-#}
-
-#resource "nomad_job" "photocatalog-photoprism" {
-#    jobspec = file("${path.module}/../homelab-nomad/photoprism/photoprism.nomad")
-#}
+resource "nomad_job" "photocatalog" {
+    jobspec = file("${path.module}/../homelab-nomad/photoprism.nomad")
+}
 
 resource "nomad_job" "mqtt" {
     jobspec = file("${path.module}/../homelab-nomad/mqtt.nomad")
