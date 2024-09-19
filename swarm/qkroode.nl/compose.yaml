@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  qkroode_nl:
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    image: minions.qkroode.nl:5000/homelab/qkroode.nl:0.79.0-2030477
+    ports:
+      - 8001:80

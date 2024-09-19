@@ -1,0 +1,30 @@
+version: '3.8'
+
+services: 
+  vaultwarden:
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      DOMAIN: "https://warden.qkroode.nl"
+      SIGNUPS_ALLOWED: "false"
+      WEBSOCKET_ENABLED: "true"
+      I_REALLY_WANT_VOLATILE_STORAGE: "true"
+    image: docker.io/vaultwarden/server:1.25.2
+    ports:
+      - 8002:80
+    volumes:
+      - vault_data:/data/
+
+volumes:
+  vault_data:
+    driver_opts:
+      type: "nfs"
+      o: "addr=truenas.qkroode.nl,nolock,soft,rw"
+      device: ":/mnt/homelab/csi/vols/vaultwarden"
