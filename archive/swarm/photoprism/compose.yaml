@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  database:
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.hostname != minion04
+    environment:
+      - MYSQL_ROOT_PASSWORD=insecure
+      - MYSQL_DATABASE=photoprism
+      - MYSQL_USER=photoprism
+      - MYSQL_PASSWORD=insecure
+      - MYSQL_INITDB_SKIP_TZINFO=1
+    image: linuxserver/mariadb:10.5.16
+    ports:
+      - 8007:3306
+    logging:
+      options:
+        splunk-sourcetype: photoprism:database
+    volumes:
+      - photoprism_database:/config
+  app:
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.hostname != minion04
+    environment:
+      - PHOTOPRISM_UPLOAD_NSFW=true
+      - PHOTOPRISM_ADMIN_PASSWORD=insecure
+      - PHOTOPRISM_READONLY=false
+      - PHOTOPRISM_WORKERS=2
+      - PHOTOPRISM_DATABASE_DRIVER=mysql
+      - PHOTOPRISM_DATABASE_SERVER=minions.qkroode.nl:8007
+      - PHOTOPRISM_DATABASE_NAME=photoprism
+      - PHOTOPRISM_DATABASE_USER=photoprism
+      - PHOTOPRISM_DATABASE_PASSWORD=insecure
+    image: photoprism/photoprism:220617-bookworm
+    ports:
+      - 8008:2342
+    logging:
+      options:
+        splunk-sourcetype: photoprism:app
+    volumes:
+      - photoprism_app:/photoprism/storage
+      - photoprism_originals:/photoprism/originals
+
+volumes:
+  photoprism_database:
+    driver_opts:
+      type: "nfs"
+      o: "addr=truenas.qkroode.nl,nolock,soft,rw"
+      device: ":/mnt/homelab/csi/vols/photoprism/database"
+  photoprism_app:
+    driver_opts:
+      type: "nfs"
+      o: "addr=truenas.qkroode.nl,nolock,soft,rw"
+      device: ":/mnt/homelab/csi/vols/photoprism/app"
+  photoprism_originals:
+    driver_opts:
+      type: "nfs"
+      o: "addr=truenas.qkroode.nl,nolock,soft,rw"
+      device: ":/mnt/NAS/photo"

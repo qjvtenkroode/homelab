@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  homeassistant:
+  registry:
     deploy:
       endpoint_mode: vip
       mode: replicated
@@ -11,17 +11,18 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    environment:
-      TZ: "Europe/Amsterdam"
-    image: ghcr.io/home-assistant/home-assistant:latest
+    image: registry:2.8.3
     ports:
-      - 8003:8123
+      - 5000:5000
+    logging:
+      options:
+        splunk-sourcetype: registry:registry
     volumes:
-      - homeassistant_data:/config
+      - registry_data:/var/lib/registry
 
 volumes:
-  homeassistant_data:
+  registry_data:
     driver_opts:
       type: "nfs"
       o: "addr=truenas.qkroode.nl,nolock,soft,rw"
-      device: ":/mnt/homelab/csi/vols/homeassistant"
+      device: ":/mnt/homelab/csi/vols/registry"

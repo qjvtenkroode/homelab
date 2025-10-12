@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mqtt:
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    image: minions.qkroode.nl:5000/homelab/eclipse-mosquitto:latest
+    ports:
+      - 8004:1883
+    logging:
+      options:
+        splunk-sourcetype: mqtt:mqtt

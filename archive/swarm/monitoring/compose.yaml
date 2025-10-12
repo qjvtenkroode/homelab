@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  prometheus:
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    image: minions.qkroode.nl:5000/homelab/prometheus:latest
+    ports:
+      - 8009:9090
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  cadvisor:
+    deploy:
+      endpoint_mode: vip
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    image: minions.qkroode.nl:5000/homelab/cadvisor:latest
+    labels:
+      - "prometheus-job=cadvisor"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run:/var/run
+      - /sys:/sys:ro
+      - /:/rootfs:ro
+  uptime-kuma:
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    image: louislam/uptime-kuma:1
+    ports:
+      - 8010:3001
+
+

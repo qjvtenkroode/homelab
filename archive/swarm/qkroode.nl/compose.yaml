@@ -14,3 +14,6 @@ services:
     image: minions.qkroode.nl:5000/homelab/qkroode.nl:0.79.0-2030477
     ports:
       - 8001:80
+    logging:
+      options:
+        splunk-sourcetype: qkroode_nl:qkroode_nl

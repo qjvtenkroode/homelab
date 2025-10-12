@@ -1,0 +1,39 @@
+version: "3.8"
+
+volumes:
+  splunk-var:
+  splunk-etc:
+
+services:
+  splunk:
+    image: splunk/splunk:9.3
+    deploy:
+      endpoint_mode: vip
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.hostname == minion04
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=Xxxxxx111!
+      - DEBUG=false
+      - TZ=Europe/Amsterdam
+    ports:
+      - 8000:8000 # GUI
+      - 8088:8088 # HEC
+      - 8089:8089 # Management
+      - 9997:9997 # UF data forwarding
+      - 9998:9998/udp # Syslog truenas
+      - 9999:9999/udp # Syslog pfsense
+    volumes:
+      - splunk-var:/opt/splunk/var
+      - splunk-etc:/opt/splunk/etc
+      - /etc/localtime:/etc/localtime:ro
+        #- /etc/timezone:/etc/timezone:ro
+

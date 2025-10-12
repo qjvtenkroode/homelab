@@ -1,7 +1,7 @@
 version: '3.8'
 
-services: 
-  vaultwarden:
+services:
+  homeassistant:
     deploy:
       endpoint_mode: vip
       mode: replicated
@@ -12,19 +12,19 @@ services:
         max_attempts: 3
         window: 120s
     environment:
-      DOMAIN: "https://warden.qkroode.nl"
-      SIGNUPS_ALLOWED: "false"
-      WEBSOCKET_ENABLED: "true"
-      I_REALLY_WANT_VOLATILE_STORAGE: "true"
-    image: docker.io/vaultwarden/server:1.25.2
+      TZ: "Europe/Amsterdam"
+    image: ghcr.io/home-assistant/home-assistant:latest
     ports:
-      - 8002:80
+      - 8003:8123
+    logging:
+      options:
+        splunk-sourcetype: homeassistant:homeassistant
     volumes:
-      - vault_data:/data/
+      - homeassistant_data:/config
 
 volumes:
-  vault_data:
+  homeassistant_data:
     driver_opts:
       type: "nfs"
       o: "addr=truenas.qkroode.nl,nolock,soft,rw"
-      device: ":/mnt/homelab/csi/vols/vaultwarden"
+      device: ":/mnt/homelab/csi/vols/homeassistant"
